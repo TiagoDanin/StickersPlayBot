@@ -10,9 +10,13 @@ search.addIndex('name')
 search.addIndex('id')
 search.addDocuments(data)
 
-var help = `*Bem-vindo*
-Para cadastrar um sticker, mande ele em meu privado e depois o nome da série (sem abreviação).
-Para buscar user o modo inline \`@StickersPlayBot nome da série\`
+var help = `*Bem-vindo(a)*
+🤖 @StickersPlayBot
+👤 Criado por Tiago Danin (@TiagoEDGE).
+👥 Com ajuda da comunidade para cadastrar os stickers.
+
+📕 Para cadastrar um sticker, mande ele em meu privado e depois o nome da série (sem abreviação e sem tradução).
+📗 Para buscar user o modo inline \`@StickersPlayBot nome da série\`.
 `
 
 const token = process.env.telegram_token
@@ -36,6 +40,14 @@ bot.command('help', (ctx) => {
 })
 
 bot.command('ajuda', (ctx) => {
+	ctx.replyWithMarkdown(help)
+})
+
+bot.command('about', (ctx) => {
+	ctx.replyWithMarkdown(help)
+})
+
+bot.command('sobre', (ctx) => {
 	ctx.replyWithMarkdown(help)
 })
 
