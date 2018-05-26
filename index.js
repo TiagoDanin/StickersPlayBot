@@ -10,6 +10,11 @@ search.addIndex('name')
 search.addIndex('id')
 search.addDocuments(data)
 
+var help = `*Bem-vindo*
+Para cadastrar um sticker, mande ele em meu privado e depois o nome da série (sem abreviação).
+Para buscar user o modo inline \`@StickersPlayBot nome da série\`
+`
+
 const token = process.env.telegram_token
 const bot = new Telegraf(token)
 
@@ -20,6 +25,18 @@ console.log('Starting...')
 
 bot.command('ping', (ctx) => {
 	ctx.replyWithMarkdown('*Pong*!')
+})
+
+bot.command('start', (ctx) => {
+	ctx.replyWithMarkdown(help)
+})
+
+bot.command('help', (ctx) => {
+	ctx.replyWithMarkdown(help)
+})
+
+bot.command('ajuda', (ctx) => {
+	ctx.replyWithMarkdown(help)
 })
 
 bot.catch((err) => {
@@ -39,7 +56,8 @@ bot.on(['sticker', 'message'], (ctx) => {
 			text = `StickerID:${stickerId}\nAgora é buscavel por: ${serieName}`
 			data.push({
 				name: msg.text,
-				id: `${stickerId}`
+				id: `${stickerId}`,
+				user: msg.from.id.toString()
 			})
 			jsonfile.writeFileSync(file, data, {replacer: true})
 			search.addDocuments(data)
