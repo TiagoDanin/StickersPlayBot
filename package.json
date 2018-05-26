@@ -1,0 +1,30 @@
+{
+  "name": "stickersplaybot",
+  "version": "1.0.0",
+  "description": "Telegram bot - @stickersplaybot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo 'Nice test :)'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TiagoDanin/StickersPlayBot.git"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "telegraf-bot",
+    "stickers"
+  ],
+  "author": "TiagoDanin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TiagoDanin/StickersPlayBot/issues"
+  },
+  "homepage": "https://github.com/TiagoDanin/StickersPlayBot#readme",
+  "dependencies": {
+    "jsonfile": "4.0.0",
+    "telegraf": "3.20.0",
+    "graceful-fs": "4.1.6"
+  }
+}
