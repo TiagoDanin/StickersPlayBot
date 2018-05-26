@@ -25,6 +25,6 @@
   "dependencies": {
     "jsonfile": "4.0.0",
     "telegraf": "3.20.0",
-    "graceful-fs": "4.1.6"
+    "graceful-fs": "4.1.11"
   }
 }
