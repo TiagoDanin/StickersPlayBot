@@ -24,7 +24,7 @@
   "homepage": "https://github.com/TiagoDanin/StickersPlayBot#readme",
   "dependencies": {
     "jsonfile": "4.0.0",
-    "telegraf": "3.20.0",
+    "telegraf": "3.21.2",
     "graceful-fs": "4.1.6"
   }
 }
