@@ -51,6 +51,13 @@ bot.command('sobre', (ctx) => {
 	ctx.replyWithMarkdown(help)
 })
 
+bot.command('stats', (ctx) => {
+	var totalDeStickes = data.length
+	ctx.replyWithMarkdown(`
+*Total de Stickers:* ${totalDeStickes}
+	`)
+})
+
 bot.catch((err) => {
 	console.log(`Oooops ${err}`)
 })
@@ -67,7 +74,7 @@ bot.on(['sticker', 'message'], (ctx) => {
 			var serieName = msg.text.toString().toLowerCase().replace(/\s/g, '').replace(/\n/g, '')
 			text = `StickerID:${stickerId}\nAgora é buscavel por: ${serieName}`
 			data.push({
-				name: msg.text,
+				name: serieName,
 				id: `${stickerId}`,
 				user: msg.from.id.toString()
 			})
