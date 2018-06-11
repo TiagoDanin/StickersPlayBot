@@ -8,7 +8,7 @@ var data = jsonfile.readFileSync(file)
 var search = new JsSearch.Search('id')
 search.addIndex('name')
 search.addIndex('id')
-search.addDocuments(data)
+search.addDocuments(data.stickers)
 
 var help = `*Bem-vindo(a)*
 🤖 @StickersPlayBot
@@ -26,6 +26,11 @@ bot.telegram.sendMessage(process.env.chat_id, '*Starting...*', {
 	parse_mode: 'Markdown'
 })
 console.log('Starting...')
+
+bot.use((ctx, next) => {
+	data.usedTotal++
+	next()
+})
 
 bot.command('ping', (ctx) => {
 	ctx.replyWithMarkdown('*Pong*!')
@@ -52,9 +57,11 @@ bot.command('sobre', (ctx) => {
 })
 
 bot.command('stats', (ctx) => {
-	var totalDeStickes = data.length
+	var totalDeStickes = data.stickers.length
+	var usedTotal = data.usedTotal
 	ctx.replyWithMarkdown(`
 *Total de Stickers:* ${totalDeStickes}
+*Total de consultas:* ${usedTotal}
 	`)
 })
 
@@ -67,14 +74,17 @@ bot.on(['sticker', 'message'], (ctx) => {
 	var text = 'Veja o /help'
 	var options = {}
 	console.log(ctx.message)
-	if (msg.reply_to_message && msg.reply_to_message.text) {
+	console.log(msg.chat && msg.chat.type && msg.chat.type != 'private')
+	if (msg.chat && msg.chat.type && msg.chat.type != 'private') {
+		return
+	} else if (msg.reply_to_message && msg.reply_to_message.text) {
 		var textOfReply = msg.reply_to_message.text
 		if (textOfReply.match('StickerID:')) {
 			var stickerId = textOfReply.replace(/StickerID:/i, '').replace(/\n.*/, '')
 			var serieName = msg.text.toString().toLowerCase().replace(/\s/g, '').replace(/\n/g, '')
 			text = `StickerID:${stickerId}\nAgora é buscavel por: ${serieName}`
-			data.push({
-				name: serieName,
+			data.stickers.push({
+				name: serieName.split('').toString().replace(/,/g, ' '),
 				id: `${stickerId}`,
 				user: msg.from.id.toString()
 			})
@@ -94,12 +104,19 @@ bot.on(['sticker', 'message'], (ctx) => {
 
 bot.on('inline_query', (ctx) => {
 	var result = []
-	var name = ctx.update.inline_query.query.toString().toLowerCase().replace(/\s/g, '').replace(/\n/g, '')
+	var name = ctx.update.inline_query.query
+		.toString()
+		.toLowerCase()
+		.replace(/\s/g, '')
+		.replace(/\n/g, '')
+		.split('')
+		.toString()
+		.replace(/,/g, ' ')
 	var series = search.search(name)
 	if (series.length == 0) {
 		result.push({
 			type: 'article',
-			title: 'Série não encontrada',
+			title: 'Série não encontrada! Mande um sticker dessa série em meu privado.',
 			id: 'notfound',
 			input_message_content: {
 				message_text: 'Série não encontrada, caso tenha um sticker dessa série mande em meu privado :)'
