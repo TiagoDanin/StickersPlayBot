@@ -89,7 +89,7 @@ bot.on(['sticker', 'message'], (ctx) => {
 				user: msg.from.id.toString()
 			})
 			jsonfile.writeFileSync(file, data, {replacer: true})
-			search.addDocuments(data)
+			search.addDocuments(data.stickers)
 		}
 	} else if (msg.sticker && msg.sticker.file_id) {
 		text = `StickerID:${msg.sticker.file_id}\nQual é o nome da série?`
