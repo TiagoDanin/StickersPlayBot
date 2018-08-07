@@ -26,6 +26,6 @@
     "graceful-fs": "4.1.6",
     "js-search": "1.4.2",
     "jsonfile": "4.0.0",
-    "telegraf": "3.21.2"
+    "telegraf": "3.22.2"
   }
 }
