@@ -59,9 +59,24 @@ bot.command('sobre', (ctx) => {
 bot.command('stats', (ctx) => {
 	var totalDeStickes = data.stickers.length
 	var usedTotal = data.usedTotal
+	var totalDeColab = data.stickers
+		.map(sticker => sticker.user)
+		.sort()
+		.reduce((_, next) => {
+			if (_.__proto__ != new Array(0).__proto__) {
+				_ = [_]
+			}
+			if (!_.includes(next)) {
+				_.push(next)
+			}
+			return _
+		})
+		.length
 	ctx.replyWithMarkdown(`
+*~> stats*
 *Total de Stickers:* ${totalDeStickes}
-*Total de consultas:* ${usedTotal}
+*Total de Consultas:* ${usedTotal}
+*Total de Colaboradores:* ${totalDeColab}
 	`)
 })
 
@@ -74,7 +89,6 @@ bot.on(['sticker', 'message'], (ctx) => {
 	var text = 'Veja o /help'
 	var options = {}
 	console.log(ctx.message)
-	console.log(msg.chat && msg.chat.type && msg.chat.type != 'private')
 	if (msg.chat && msg.chat.type && msg.chat.type != 'private') {
 		return
 	} else if (msg.reply_to_message && msg.reply_to_message.text) {
@@ -122,9 +136,8 @@ bot.on('inline_query', (ctx) => {
 				message_text: 'Série não encontrada, caso tenha um sticker dessa série mande em meu privado :)'
 			}
 		})
-	} else if (series.length <= 20) {
+	} else if (series.length <= 30) {
 		series.forEach(serie => {
-			console.log(serie)
 			result.push({
 				type: 'sticker',
 				id: `${serie.id}`,
@@ -134,7 +147,7 @@ bot.on('inline_query', (ctx) => {
 	} else {
 		result.push({
 			type: 'article',
-			title: 'Carregando...',
+			title: 'Achei mais de 30 Stickers. Continuie escrevendo o nome da série para eu exebir o correto...',
 			id: 'loading',
 			input_message_content: {
 				message_text: 'Carregando...'
