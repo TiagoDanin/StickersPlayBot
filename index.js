@@ -22,6 +22,15 @@ var help = `*Bem-vindo(a)*
 const token = process.env.telegram_token
 const bot = new Telegraf(token)
 
+function checkStickers(id) {
+	for (sticker of data.stickers) {
+		if (sticker.id.includes(id)) {
+			return false
+		}
+	}
+	return true
+}
+
 bot.telegram.sendMessage(process.env.chat_id, '*Starting...*', {
 	parse_mode: 'Markdown'
 })
@@ -54,6 +63,30 @@ bot.command('about', (ctx) => {
 
 bot.command('sobre', (ctx) => {
 	ctx.replyWithMarkdown(help)
+})
+
+bot.hears(/^\/pack (.*)/i, (ctx) => {
+	var name = ctx.match[1]
+	var chatId = ctx.chat.id
+	bot.telegram.getStickerSet(name).then(async update => {
+		ctx.reply('Vou começar a manda stickes sem nome!')
+		for (sticker of update.stickers) {
+			console.log(sticker)
+			var stickerId = sticker.file_id
+			if (checkStickers(stickerId)) {
+				console.log(stickerId)
+				await bot.telegram.sendSticker(chatId, stickerId).then(async msg => {
+					await bot.telegram.sendMessage(chatId, `StickerID:${stickerId}\nQual é o nome da série?`, {
+						reply_to_message_id: msg.message_id
+					})
+				})
+			}
+		}
+		ctx.reply('Feito!')
+	}).catch(e => {
+		console.log(e)
+		ctx.reply('Não conheço um pack com esse nome!')
+	})
 })
 
 bot.command('stats', (ctx) => {
@@ -106,7 +139,12 @@ bot.on(['sticker', 'message'], (ctx) => {
 			search.addDocuments(data.stickers)
 		}
 	} else if (msg.sticker && msg.sticker.file_id) {
-		text = `StickerID:${msg.sticker.file_id}\nQual é o nome da série?`
+		var stickerId = msg.sticker.file_id
+		text = `StickerID:${stickerId}\nQual é o nome da série?`
+		if (!checkStickers(stickerId)) {
+			text += '\nJá achei esse sticker no meu bando de dados!'
+			text += '\nVocê pode enviar um novo nome, um moderador vai escolher o melhor.'
+		}
 		options = {
 			reply_markup: {
 				force_reply: true
