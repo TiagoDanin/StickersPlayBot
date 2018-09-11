@@ -37,7 +37,9 @@ bot.telegram.sendMessage(process.env.chat_id, '*Starting...*', {
 console.log('Starting...')
 
 bot.use((ctx, next) => {
+	console.log('\n------------')
 	data.usedTotal++
+	console.log('Used ~>', data.usedTotal)
 	next()
 })
 
@@ -65,16 +67,18 @@ bot.command('sobre', (ctx) => {
 	ctx.replyWithMarkdown(help)
 })
 
+bot.command('backup', (ctx) => {
+	ctx.replyWithDocument({ source: 'data.json' })
+})
+
 bot.hears(/^\/pack (.*)/i, (ctx) => {
 	var name = ctx.match[1]
 	var chatId = ctx.chat.id
 	bot.telegram.getStickerSet(name).then(async update => {
 		ctx.reply('Vou começar a manda stickes sem nome!')
 		for (sticker of update.stickers) {
-			console.log(sticker)
 			var stickerId = sticker.file_id
 			if (checkStickers(stickerId)) {
-				console.log(stickerId)
 				await bot.telegram.sendSticker(chatId, stickerId).then(async msg => {
 					await bot.telegram.sendMessage(chatId, `StickerID:${stickerId}\nQual é o nome da série?`, {
 						reply_to_message_id: msg.message_id
@@ -121,29 +125,55 @@ bot.on(['sticker', 'message'], (ctx) => {
 	var msg = ctx.message
 	var text = 'Veja o /help'
 	var options = {}
-	console.log(ctx.message)
 	if (msg.chat && msg.chat.type && msg.chat.type != 'private') {
 		return
 	} else if (msg.reply_to_message && msg.reply_to_message.text) {
 		var textOfReply = msg.reply_to_message.text
-		if (textOfReply.match('StickerID:')) {
-			var stickerId = textOfReply.replace(/StickerID:/i, '').replace(/\n.*/, '')
+		var match = textOfReply.match('StickerID:(.+)\n')
+		if (match) {
+			var stickerId = match[1]
+			console.log('Sticker ~>', stickerId)
 			var serieName = msg.text.toString().toLowerCase().replace(/\s/g, '').replace(/\n/g, '')
-			text = `StickerID:${stickerId}\nAgora é buscavel por: ${serieName}`
+			text = `StickerID:${stickerId}`
+			if (!checkStickers(stickerId)) {
+				text += `\n‼️ Sugestão: ${serieName} foi enviado para @TiagoEDGE.`
+				var avisoTexto = `#Aviso\nID:${stickerId}`
+				avisoTexto += `\nUser: ${msg.from.id}`
+				if (msg.from.username) {
+					avisoTexto += `\nUsername: @${msg.from.username}`
+				}
+				var serie = search.search(stickerId.toString())
+				if (serie.length != 0) {
+					avisoTexto += `\nAtual: ${serie[0].name.replace(/\s/g, '')}`
+				}
+				avisoTexto += `\nSugestão: ${serieName}`
+				bot.telegram.sendMessage(
+					process.env.chat_id,
+					avisoTexto
+				)
+			} else {
+				text += `\nAgora é buscavel por: ${serieName}`
+			}
 			data.stickers.push({
 				name: serieName.split('').toString().replace(/,/g, ' '),
 				id: `${stickerId}`,
 				user: msg.from.id.toString()
 			})
+			console.log('SerieName ~>', serieName)
 			jsonfile.writeFileSync(file, data, {replacer: true})
 			search.addDocuments(data.stickers)
 		}
 	} else if (msg.sticker && msg.sticker.file_id) {
 		var stickerId = msg.sticker.file_id
+		console.log('Input Sticker ~>', stickerId)
 		text = `StickerID:${stickerId}\nQual é o nome da série?`
 		if (!checkStickers(stickerId)) {
-			text += '\nJá achei esse sticker no meu bando de dados!'
-			text += '\nVocê pode enviar um novo nome, um moderador vai escolher o melhor.'
+			text += '\n\nJá achei esse sticker no meu bando de dados!'
+			var serie = search.search(stickerId.toString())
+			if (serie.length != 0) {
+				text += `\nSeu nome de busca atual é: ${serie[0].name.replace(/\s/g, '')}\n`
+			}
+			text += '\n‼️ Você pode enviar um novo nome, um moderador vai escolher o melhor.'
 		}
 		options = {
 			reply_markup: {
@@ -164,6 +194,7 @@ bot.on('inline_query', (ctx) => {
 		.split('')
 		.toString()
 		.replace(/,/g, ' ')
+	console.log('Inline Query ~>', ctx.update.inline_query.query)
 	var series = search.search(name)
 	if (series.length == 0) {
 		result.push({
@@ -174,7 +205,7 @@ bot.on('inline_query', (ctx) => {
 				message_text: 'Série não encontrada, caso tenha um sticker dessa série mande em meu privado :)'
 			}
 		})
-	} else if (series.length <= 30) {
+	} else if (series.length <= 40) {
 		series.forEach(serie => {
 			result.push({
 				type: 'sticker',
@@ -185,7 +216,7 @@ bot.on('inline_query', (ctx) => {
 	} else {
 		result.push({
 			type: 'article',
-			title: 'Achei mais de 30 Stickers. Continuie escrevendo o nome da série para eu exebir o correto...',
+			title: 'Achei mais de 40 Stickers. Continuie escrevendo o nome da série para eu exebir o correto...',
 			id: 'loading',
 			input_message_content: {
 				message_text: 'Carregando...'
