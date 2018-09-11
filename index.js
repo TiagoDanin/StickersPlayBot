@@ -1,6 +1,7 @@
 const Telegraf = require('telegraf')
 const jsonfile = require('jsonfile')
 const JsSearch = require('js-search')
+const similarity = require('similarity')
 
 const file = 'data.json'
 var data = jsonfile.readFileSync(file)
@@ -206,13 +207,21 @@ bot.on('inline_query', (ctx) => {
 			}
 		})
 	} else if (series.length <= 40) {
-		series.forEach(serie => {
+		name = name.split('').toString().replace(/,/g, ' ')
+		series = series.sort((a, b) => {
+			var indexA = a.name
+			var indexB = b.name
+			if (similarity(indexA, name) < similarity(indexB, name)) { return 1 }
+			if (similarity(indexA, name) > similarity(indexB, name)) { return -1  }
+			return 0
+		})
+		for (serie of series) {
 			result.push({
 				type: 'sticker',
 				id: `${serie.id}`,
 				sticker_file_id: `${serie.id}`
 			})
-		})
+		}
 	} else {
 		result.push({
 			type: 'article',
