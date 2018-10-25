@@ -1,6 +1,6 @@
 {
   "name": "stickersplaybot",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Telegram bot - @stickersplaybot",
   "main": "index.js",
   "scripts": {
@@ -26,7 +26,7 @@
     "graceful-fs": "4.1.6",
     "js-search": "1.4.2",
     "jsonfile": "5.0.0",
-    "similarity": "^1.1.1",
+    "similarity": "1.1.1",
     "telegraf": "3.24.1"
   }
 }
