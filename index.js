@@ -16,8 +16,10 @@ var help = `*Bem-vindo(a)*
 👤 Criado por Tiago Danin (@TiagoEDGE).
 👥 Com ajuda da comunidade para cadastrar os stickers.
 
+🗣 [Canal de Atualizações & Log](https://t.me/${process.env.channel_link})
+
 📕 Para cadastrar um sticker, mande ele em meu privado e depois o nome da série (sem abreviação e sem tradução).
-📗 Para buscar user o modo inline \`@StickersPlayBot nome da série\`.
+📗 Para pesquisar user o modo inline \`@StickersPlayBot nome da série\`.
 `
 
 const token = process.env.telegram_token
@@ -52,19 +54,7 @@ bot.command('start', (ctx) => {
 	ctx.replyWithMarkdown(help)
 })
 
-bot.command('help', (ctx) => {
-	ctx.replyWithMarkdown(help)
-})
-
-bot.command('ajuda', (ctx) => {
-	ctx.replyWithMarkdown(help)
-})
-
-bot.command('about', (ctx) => {
-	ctx.replyWithMarkdown(help)
-})
-
-bot.command('sobre', (ctx) => {
+bot.command(['sobre', 'about', 'ajuda', 'help'], (ctx) => {
 	ctx.replyWithMarkdown(help)
 })
 
@@ -76,7 +66,7 @@ bot.hears(/^\/pack (.*)/i, (ctx) => {
 	var name = ctx.match[1]
 	var chatId = ctx.chat.id
 	bot.telegram.getStickerSet(name).then(async update => {
-		ctx.reply('Vou começar a manda stickes sem nome!')
+		ctx.reply('Vou começar a manda stickers sem nome!')
 		for (sticker of update.stickers) {
 			var stickerId = sticker.file_id
 			if (checkStickers(stickerId)) {
@@ -148,18 +138,39 @@ bot.on(['sticker', 'message'], (ctx) => {
 					avisoTexto += `\nAtual: ${serie[0].name.replace(/\s/g, '')}`
 				}
 				avisoTexto += `\nSugestão: ${serieName}`
-				bot.telegram.sendMessage(
-					process.env.chat_id,
-					avisoTexto
-				)
+				bot.telegram.sendMessage(process.env.chat_id, avisoTexto, {
+					reply_markup: {
+						inline_keyboard:
+						[
+							[{text: '✅ Sim' , callback_data: `true:${stickerId}` }],
+							[{text: '❌ Não' , callback_data: `false:${stickerId}` }]
+						]
+					}
+				})
+				data.sugestion.push({
+					name: serieName.split('').toString().replace(/,/g, ' '),
+					id: `${stickerId}`,
+					user: msg.from.id.toString()
+				})
 			} else {
-				text += `\nAgora é buscavel por: ${serieName}`
+				text += `\nAgora é pesquisavel por: ${serieName}`
+				data.stickers.push({
+					name: serieName.split('').toString().replace(/,/g, ' '),
+					id: `${stickerId}`,
+					user: msg.from.id.toString()
+				})
+
+				bot.telegram.sendSticker(process.env.channel_id, stickerId)
+				bot.telegram.sendMessage(process.env.channel_id, `
+📌 *Sticker (Novo)*
+Sticker ID: \`${stickerId}\`
+Pesquisar ID: ${serieName.split('').toString().replace(/,/g, '')}
+Colaborador ID: ${msg.from.id}
+					`,
+					{ parse_mode: 'Markdown' }
+				)
 			}
-			data.stickers.push({
-				name: serieName.split('').toString().replace(/,/g, ' '),
-				id: `${stickerId}`,
-				user: msg.from.id.toString()
-			})
+
 			console.log('SerieName ~>', serieName)
 			jsonfile.writeFileSync(file, data, {replacer: true})
 			search.addDocuments(data.stickers)
@@ -167,15 +178,16 @@ bot.on(['sticker', 'message'], (ctx) => {
 	} else if (msg.sticker && msg.sticker.file_id) {
 		var stickerId = msg.sticker.file_id
 		console.log('Input Sticker ~>', stickerId)
-		text = `StickerID:${stickerId}\nQual é o nome da série?`
+		text = `StickerID:${stickerId}`
 		if (!checkStickers(stickerId)) {
 			text += '\n\nJá achei esse sticker no meu bando de dados!'
 			var serie = search.search(stickerId.toString())
 			if (serie.length != 0) {
-				text += `\nSeu nome de busca atual é: ${serie[0].name.replace(/\s/g, '')}\n`
+				text += `\nSeu nome de pesquisar atual é: ${serie[0].name.replace(/\s/g, '')}\n`
 			}
-			text += '\n‼️ Você pode enviar um novo nome, um moderador vai escolher o melhor.'
+			text += '\n‼️ Você pode enviar um novo nome e o moderador vai escolher o melhor.'
 		}
+		text += '\n\n🖍 Qual é o nome da série?'
 		options = {
 			reply_markup: {
 				force_reply: true
@@ -235,6 +247,76 @@ bot.on('inline_query', (ctx) => {
 	ctx.answerInlineQuery(result, {
 		cache_time: 0
 	})
+})
+
+bot.on('callback_query', (ctx) => {
+	if (ctx.update && ctx.update.callback_query && ctx.update.callback_query.data) {
+		var callbackData = ctx.update.callback_query.data.split(':')
+		var status = (callbackData[0] == 'true' ? true : false)
+		var stickerId = callbackData[1]
+		var stickerData = data.sugestion.reduce((total, sticker) => {
+			return sticker.id == stickerId ? sticker : total
+		}, false)
+
+		var textCallback = 'Aplicação foi negada ‼️'
+		var textUser = `❌ Modificação de Sticker
+Sua Sugestão foi **NEGADA**!
+Seu texto de sugestão foi: \`${stickerData.name.replace(/\s/g, '')}\`
+Você pode ver o motivo falando com @TiagoEDGE
+`
+
+		if (stickerData) {
+			data.sugestion = data.sugestion.reduce((total, sticker) => {
+				if (sticker.id != stickerId) {
+					total.push(sticker)
+				}
+				return total
+			}, []) //Remove sugestion list
+			if (status) {
+				data.stickers = data.stickers.reduce((total, sticker) => {
+					if (sticker.id == stickerId) {
+						total.push(stickerData)
+					} else {
+						total.push(sticker)
+					}
+					return total
+				}, []) //Use sugestion
+
+				textCallback = 'Aplicação foi aceita ‼️'
+				textUser = `✅ Modificação de Sticker
+Sua Sugestão foi **ACEITA**!
+Novo id de pesquisar é: \`${stickerData.name.replace(/\s/g, '')}\`
+`
+				bot.telegram.sendSticker(process.env.channel_id, stickerData.id)
+				bot.telegram.sendMessage(process.env.channel_id, `
+📌 *Sticker (Atualização de dados)*
+Sticker ID: \`${stickerData.id}\`
+Pesquisar ID: ${stickerData.name.replace(/\s/g, '')}
+Colaborador ID: ${stickerData.user}
+					`,
+					{ parse_mode: 'Markdown' }
+				)
+			}
+
+			ctx.answerCbQuery(
+				textCallback,
+				true
+			)
+			bot.telegram.sendMessage(
+				stickerData.user,
+				textUser,
+				{ parse_mode: 'Markdown' }
+			)
+
+			jsonfile.writeFileSync(file, data, {replacer: true})
+			search.addDocuments(data.stickers)
+		} else {
+			ctx.answerCbQuery(
+				'Você já selecionou esta opção ‼️',
+				true
+			)
+		}
+	}
 })
 
 bot.startPolling()
