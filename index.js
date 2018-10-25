@@ -50,11 +50,7 @@ bot.command('ping', (ctx) => {
 	ctx.replyWithMarkdown('*Pong*!')
 })
 
-bot.command('start', (ctx) => {
-	ctx.replyWithMarkdown(help)
-})
-
-bot.command(['sobre', 'about', 'ajuda', 'help'], (ctx) => {
+bot.command(['start', 'sobre', 'about', 'ajuda', 'help'], (ctx) => {
 	ctx.replyWithMarkdown(help)
 })
 
@@ -87,24 +83,33 @@ bot.hears(/^\/pack (.*)/i, (ctx) => {
 bot.command('stats', (ctx) => {
 	var totalDeStickes = data.stickers.length
 	var usedTotal = data.usedTotal
+	var topUsers = {}
 	var totalDeColab = data.stickers
 		.map(sticker => sticker.user)
 		.sort()
 		.reduce((_, next) => {
-			if (_.__proto__ != new Array(0).__proto__) {
-				_ = [_]
-			}
 			if (!_.includes(next)) {
 				_.push(next)
 			}
+			topUsers[next] = topUsers[next] + 1 || 1
 			return _
-		})
+		}, [])
 		.length
+
+	topUsers = Object.keys(topUsers).sort((a, b) => topUsers[b] - topUsers[a])
+
 	ctx.replyWithMarkdown(`
 *~> stats*
 *Total de Stickers:* ${totalDeStickes}
 *Total de Consultas:* ${usedTotal}
 *Total de Colaboradores:* ${totalDeColab}
+
+*Top 5* de colaboradores (IDs):
+*1.* - \`${topUsers[0]}\`
+*2.* - \`${topUsers[1]}\`
+*3.* - \`${topUsers[2]}\`
+*4.* - \`${topUsers[3]}\`
+*5.* - \`${topUsers[4]}\`
 	`)
 })
 
