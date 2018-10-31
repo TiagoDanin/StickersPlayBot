@@ -44,9 +44,9 @@ node-fetch@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.2.0.tgz#4ee79bde909262f9775f731e3656d0db55ced5b5"
 
-sandwich-stream@^1.0.0:
-  version "1.0.0"
-  resolved "http://registry.npmjs.org/sandwich-stream/-/sandwich-stream-1.0.0.tgz#7830e45797b5933287f1f9b28f871907456262f2"
+sandwich-stream@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/sandwich-stream/-/sandwich-stream-2.0.1.tgz#71606fd182ec07ac41ecaf963f82eb6718aaf765"
 
 similarity@1.1.1:
   version "1.1.1"
@@ -54,14 +54,14 @@ similarity@1.1.1:
   dependencies:
     leven "^2.0.0"
 
-telegraf@3.24.1:
-  version "3.24.1"
-  resolved "https://registry.yarnpkg.com/telegraf/-/telegraf-3.24.1.tgz#bfcfe326210ea9d341032a6e6910e36f4c25440c"
+telegraf@3.25.0:
+  version "3.25.0"
+  resolved "https://registry.yarnpkg.com/telegraf/-/telegraf-3.25.0.tgz#f08e463584803c36462e22668ad1e1f362f1f253"
   dependencies:
     "@types/node" "^10.1.2"
     debug "^4.0.1"
     node-fetch "^2.2.0"
-    sandwich-stream "^1.0.0"
+    sandwich-stream "^2.0.1"
     telegram-typings "^3.6.0"
 
 telegram-typings@^3.6.0:
