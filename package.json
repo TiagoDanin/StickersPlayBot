@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/TiagoDanin/StickersPlayBot#readme",
   "dependencies": {
-    "graceful-fs": "4.1.6",
+    "graceful-fs": "4.1.15",
     "js-search": "1.4.2",
     "jsonfile": "5.0.0",
     "similarity": "1.1.1",
