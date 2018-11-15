@@ -177,7 +177,10 @@ Colaborador ID: ${msg.from.id}
 			}
 
 			console.log('SerieName ~>', serieName)
-			jsonfile.writeFileSync(file, data, {replacer: true})
+			jsonfile.writeFileSync(file, data, {
+				replacer: true,
+				spaces: '\t'
+			})
 			search.addDocuments(data.stickers)
 		}
 	} else if (msg.sticker && msg.sticker.file_id) {
@@ -224,10 +227,10 @@ bot.on('inline_query', (ctx) => {
 			}
 		})
 	} else if (series.length <= 40) {
-		name = name.split('').toString().replace(/,/g, ' ')
+		name = name.split('').toString().replace(/,/g, '').replace(/[\W\d]/g, 'c')
 		series = series.sort((a, b) => {
-			var indexA = a.name
-			var indexB = b.name
+			var indexA = a.name.replace(/\s/g, '').replace(/[\W\d]/g, 'c')
+			var indexB = b.name.replace(/\s/g, '').replace(/[\W\d]/g, 'c')
 			if (similarity(indexA, name) < similarity(indexB, name)) { return 1 }
 			if (similarity(indexA, name) > similarity(indexB, name)) { return -1  }
 			return 0
@@ -313,7 +316,10 @@ Colaborador ID: ${stickerData.user}
 				{ parse_mode: 'Markdown' }
 			)
 
-			jsonfile.writeFileSync(file, data, {replacer: true})
+			jsonfile.writeFileSync(file, data, {
+				replacer: true,
+				spaces: '\t'
+			})
 			search.addDocuments(data.stickers)
 		} else {
 			ctx.answerCbQuery(
