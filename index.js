@@ -56,7 +56,7 @@ bot.command(['start', 'sobre', 'about', 'ajuda', 'help'], (ctx) => {
 
 bot.command('backup', (ctx) => {
 	ctx.replyWithMarkdown('#Backup')
-	ctx.replyWithDocument({ source: 'Stickers.backup.JSON' })
+	ctx.replyWithDocument({ source: 'data.json' })
 })
 
 bot.hears(/^\/pack (.*)/i, (ctx) => {
