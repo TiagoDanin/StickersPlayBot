@@ -1,27 +1,39 @@
 {
   "name": "stickersplaybot",
+  "main": "index.js",
   "version": "1.6.1",
   "description": "Telegram bot - @stickersplaybot",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo 'Nice test :)'"
+  "author": {
+    "name": "Tiago Danin",
+    "email": "TiagoDanin@outlook.com",
+    "url": "https://TiagoDanin.github.io"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/TiagoDanin/StickersPlayBot.git"
-  },
+  "license": "MIT",
   "keywords": [
     "telegram",
     "bot",
     "telegraf-bot",
     "stickers"
   ],
-  "author": "TiagoDanin",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/TiagoDanin/StickersPlayBot/issues"
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo 'Nice test :)'"
   },
-  "homepage": "https://github.com/TiagoDanin/StickersPlayBot#readme",
+  "private": false,
+  "repository": "https://github.com/TiagoDanin/StickersPlayBot.git",
+  "homepage": "https://TiagoDanin.github.io/StickersPlayBot",
+  "bugs": "https://github.com/TiagoDanin/StickersPlayBot/issues",
+  "github": {
+    "name": "StickersPlayBot",
+    "owner": "TiagoDanin"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "data.json",
+    "index.js",
+    "package.json"
+  ],
   "dependencies": {
     "graceful-fs": "4.1.15",
     "js-search": "1.4.2",
