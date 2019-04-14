@@ -39,6 +39,6 @@
     "js-search": "1.4.2",
     "jsonfile": "5.0.0",
     "similarity": "1.1.1",
-    "telegraf": "3.28.0"
+    "telegraf": "3.29.0"
   }
 }
