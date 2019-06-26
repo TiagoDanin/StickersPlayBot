@@ -36,7 +36,7 @@
   ],
   "dependencies": {
     "graceful-fs": "4.1.15",
-    "js-search": "1.4.2",
+    "js-search": "1.4.3",
     "jsonfile": "5.0.0",
     "similarity": "1.1.1",
     "telegraf": "3.29.0"
