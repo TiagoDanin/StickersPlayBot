@@ -54,9 +54,9 @@ similarity@1.1.1:
   dependencies:
     leven "^2.0.0"
 
-telegraf@3.30.1:
-  version "3.30.1"
-  resolved "https://registry.yarnpkg.com/telegraf/-/telegraf-3.30.1.tgz#981e5cfe0a8dba1e0bfd0fffeff97929f33cbe01"
+telegraf@3.33.3:
+  version "3.33.3"
+  resolved "https://registry.yarnpkg.com/telegraf/-/telegraf-3.33.3.tgz#f7a573088f0cc9594e126b21efb0ec4a4c3499f4"
   dependencies:
     "@types/node" "^12.0.4"
     debug "^4.0.1"
