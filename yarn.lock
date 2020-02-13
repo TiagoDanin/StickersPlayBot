@@ -32,9 +32,9 @@ jsonfile@5.0.0:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
-leven@^2.0.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/leven/-/leven-2.1.0.tgz#c2e7a9f772094dee9d34202ae8acce4687875580"
+levenshtein-edit-distance@^2.0.0:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/levenshtein-edit-distance/-/levenshtein-edit-distance-2.0.5.tgz#a066eca8afb350e4d9054aed9ffeef66e78ffc83"
 
 minimist@^1.2.0:
   version "1.2.0"
@@ -56,11 +56,11 @@ sandwich-stream@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/sandwich-stream/-/sandwich-stream-2.0.1.tgz#71606fd182ec07ac41ecaf963f82eb6718aaf765"
 
-similarity@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/similarity/-/similarity-1.1.1.tgz#41c370b4f5d0f904d3d4907f96f2e3d32be9b931"
+similarity@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/similarity/-/similarity-1.2.0.tgz#83be29d937b13311006cd35c7e35f66c944c0a51"
   dependencies:
-    leven "^2.0.0"
+    levenshtein-edit-distance "^2.0.0"
 
 telegraf@3.36.0:
   version "3.36.0"
