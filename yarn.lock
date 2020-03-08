@@ -56,9 +56,9 @@ sandwich-stream@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/sandwich-stream/-/sandwich-stream-2.0.1.tgz#71606fd182ec07ac41ecaf963f82eb6718aaf765"
 
-similarity@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/similarity/-/similarity-1.2.0.tgz#83be29d937b13311006cd35c7e35f66c944c0a51"
+similarity@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/similarity/-/similarity-1.2.1.tgz#58eed40bc90742434abcf1b8e0b9af63241fb3dd"
   dependencies:
     levenshtein-edit-distance "^2.0.0"
 
