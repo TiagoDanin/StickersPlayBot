@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-"@types/node@^13.1.0":
-  version "13.5.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.5.0.tgz#4e498dbf355795a611a87ae5ef811a8660d42662"
-
 debug@^4.0.1:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.1.0.tgz#373687bffa678b38b1cd91f861b63850035ddc87"
@@ -62,11 +58,10 @@ similarity@1.2.1:
   dependencies:
     levenshtein-edit-distance "^2.0.0"
 
-telegraf@3.36.0:
-  version "3.36.0"
-  resolved "https://registry.yarnpkg.com/telegraf/-/telegraf-3.36.0.tgz#eab1160159df6033d3cb92ac990902523277822a"
+telegraf@3.37.0:
+  version "3.37.0"
+  resolved "https://registry.yarnpkg.com/telegraf/-/telegraf-3.37.0.tgz#f88ae3d4bddac6f479137d4c867489acf3f57b66"
   dependencies:
-    "@types/node" "^13.1.0"
     debug "^4.0.1"
     minimist "^1.2.0"
     module-alias "^2.2.2"
