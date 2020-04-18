@@ -1,44 +1,47 @@
 {
-  "name": "stickersplaybot",
-  "main": "index.js",
-  "version": "1.7.0",
-  "description": "Telegram bot - @stickersplaybot",
-  "author": {
-    "name": "Tiago Danin",
-    "email": "TiagoDanin@outlook.com",
-    "url": "https://TiagoDanin.github.io"
-  },
-  "license": "MIT",
-  "keywords": [
-    "telegram",
-    "bot",
-    "telegraf-bot",
-    "stickers"
-  ],
-  "scripts": {
-    "start": "node index.js",
-    "test": "echo 'Nice test :)'"
-  },
-  "private": false,
-  "repository": "https://github.com/TiagoDanin/StickersPlayBot.git",
-  "homepage": "https://TiagoDanin.github.io/StickersPlayBot",
-  "bugs": "https://github.com/TiagoDanin/StickersPlayBot/issues",
-  "github": {
-    "name": "StickersPlayBot",
-    "owner": "TiagoDanin"
-  },
-  "files": [
-    "LICENSE",
-    "README.md",
-    "data.json",
-    "index.js",
-    "package.json"
-  ],
-  "dependencies": {
-    "graceful-fs": "4.2.3",
-    "js-search": "2.0.0",
-    "jsonfile": "6.0.1",
-    "similarity": "1.2.1",
-    "telegraf": "3.37.0"
-  }
+    "name": "stickersplaybot",
+    "main": "index.js",
+    "version": "1.7.0",
+    "description": "Telegram bot - @stickersplaybot",
+    "author": {
+        "name": "Tiago Danin",
+        "email": "TiagoDanin@outlook.com",
+        "url": "https://TiagoDanin.github.io"
+    },
+    "license": "MIT",
+    "keywords": [
+        "telegram",
+        "bot",
+        "telegraf-bot",
+        "stickers"
+    ],
+    "scripts": {
+        "start": "env-cmd node index.js"
+    },
+    "private": false,
+    "repository": "https://github.com/TiagoDanin/StickersPlayBot.git",
+    "homepage": "https://TiagoDanin.github.io/StickersPlayBot",
+    "bugs": "https://github.com/TiagoDanin/StickersPlayBot/issues",
+    "github": {
+        "name": "StickersPlayBot",
+        "owner": "TiagoDanin"
+    },
+    "files": [
+        "LICENSE",
+        "README.md",
+        "data.json",
+        "index.js",
+        "package.json"
+    ],
+    "dependencies": {
+        "graceful-fs": "4.2.3",
+        "js-search": "2.0.0",
+        "jsonfile": "6.0.1",
+        "similarity": "1.2.1",
+        "telegraf": "3.37.0"
+    },
+    "devDependencies": {
+        "env-cmd": "^10.1.0",
+        "xo": "^0.29.1"
+    }
 }
