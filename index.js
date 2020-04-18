@@ -271,7 +271,6 @@ bot.on('inline_query', ctx => {
     console.log(result)
     ctx.answerInlineQuery(result, {
         cache_time: 0,
-        next_offset: result.length
     })
 });
 bot.on('callback_query', ctx => {
