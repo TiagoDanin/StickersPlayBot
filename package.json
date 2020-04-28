@@ -34,7 +34,7 @@
         "package.json"
     ],
     "dependencies": {
-        "graceful-fs": "4.2.3",
+        "graceful-fs": "4.2.4",
         "js-search": "2.0.0",
         "jsonfile": "6.0.1",
         "similarity": "1.2.1",
