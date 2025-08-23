@@ -41,7 +41,7 @@
         "telegraf": "4.0.3"
     },
     "devDependencies": {
-        "env-cmd": "^10.1.0",
+        "env-cmd": "^11.0.0",
         "xo": "^0.33.1"
     }
 }
